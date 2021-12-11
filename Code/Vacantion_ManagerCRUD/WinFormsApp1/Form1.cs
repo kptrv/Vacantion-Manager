@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WinFormsApp1
 {
@@ -16,6 +11,8 @@ namespace WinFormsApp1
         {
             InitializeComponent();
         }
+
+        SqlConnection con = new SqlConnection(@"Data Source=THENAMEOFDATABASE;Initial Catalog=VacantionManagerDB;Integrated Security=True");
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -28,11 +25,25 @@ namespace WinFormsApp1
             textBox2.Enabled = false;
             textBox3.Enabled = true;
             textBox4.Enabled = false;
+
+            con.Open();
+            SqlDataAdapter sda = new SqlDataAdapter("Select * from Stops", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView1.DataSource = dt;
+            con.Close();
+
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-           
+            con.Open();
+            SqlDataAdapter sda = new SqlDataAdapter("Select * from Transport", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView1.DataSource = dt;
+            con.Close();
+
             textBox1.Enabled = true;
             textBox2.Enabled = false;
             textBox3.Enabled = true;
@@ -41,10 +52,28 @@ namespace WinFormsApp1
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
+            con.Open();
+            SqlDataAdapter sda = new SqlDataAdapter("Select * from Trips", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView1.DataSource = dt;
+            con.Close();
+
             textBox1.Enabled = true;
             textBox2.Enabled = true;
             textBox3.Enabled = true;
             textBox4.Enabled = true;
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
     }
 }
